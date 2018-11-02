@@ -77,6 +77,7 @@ class HashTable
 {
 private:
 	const int tableSize = 10;
+	int table[tableSize];
 public:
 // Methods
 // Constructors
