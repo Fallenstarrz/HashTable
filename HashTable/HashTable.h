@@ -48,7 +48,8 @@ class HashTable
 {
 private:
 	const int tableSize = 10;
-	Node<K,V> table = Node<K,V>[tableSize];
+	// Switch to using a double pointer table
+	Node<K,V> table = Node<K,V> [tableSize];
 public:
 // Methods
 // Constructors
@@ -62,13 +63,36 @@ public:
 
 	}
 // Insert function to add a node to the HashTable
-	Node<K,V>* insert(K keyToInsert, V valueToInsert)
+	void insert(K keyToInsert, V valueToInsert)
 	{
+		// Hash the key and use the return of the hashKey function to pick spot in the table
+		int hash = getHash(keyToInsert);
 
+		if (table[hash] == null)
+		{
+			table[hash] = new Node<K, V>(keyToInsert, valueToInsert);
+		}
+		else
+		{
+			temp = table[hash];
+			while (temp.getNext() != nullptr)
+			{
+				temp = temp.getNextNode();
+			}
+			Node<K, V>* nodeToInsert = new Node<K, V>(keyToInsert, valueToInsert);
+			temp.setNextNode(nodeToInsert);
+		}
 	}
 // Retrieve function to get info from the HashTable
 	Node<K,V>* retrieve(K keyToFind)
 	{
 
+	}
+
+	int getHash(K keyToHash);
+	{
+		// Formula to hash
+		// tableSize is item to mod by
+		return hashKey;
 	}
 };
