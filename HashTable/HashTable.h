@@ -1,36 +1,26 @@
 #pragma once
 
+#include <string>
+
 // Hash table node class
 // These store the values, keys and a pointer to the next Node at index.
-template<typename genericType>
+template<typename K, typename V>
 class Node
 {
 private:
-	genericType key;
-	genericType value;
-	Node<genericType>* nextNode;
+	K key;
+	V value;
+	Node<K,V>* nextNode;
 public:
 // Methods
 // Constructors
-	Node()
-	{
-		key = NULL;
-		value = NULL;
-		nextNode = nullptr;
-	}
-	Node(genericType newKey)
-	{
-		key = newKey;
-		value = NULL;
-		nextNode = nullptr;
-	}
-	Node(genericType newKey, genericType newValue)
+	Node(K newKey, V newValue)
 	{
 		key = newKey;
 		value = newValue;
 		nextNode = nullptr;
 	}
-	Node(genericType newKey, genericType newValue, Node<genericType>* newNextNode)
+	Node(K, V, Node<K,V>* newNextNode)
 	{
 		key = newKey;
 		value = newValue;
@@ -39,45 +29,26 @@ public:
 // Deconstructors
 	~Node()
 	{
-		key = NULL;
-		value = NULL;
 		nextNode = nullptr;
 	}
 
 // Getters
-	genericType getKey()
-	{
-		return key;
-	}
-	genericType getValue()
-	{
-		return value;
-	}
-	Node<genericType>* getNextNode()
-	{
-		return nextNode;
-	}
+	K getKey() { return key; }
+	V getValue() { return value; }
+	Node<K, V>* getNextNode() { return nextNode; }
+
 // Setters
-	void setKey(genericType newKey)
-	{
-		key = newKey;
-	}
-	void setValue(genericType newValue)
-	{
-		value = newValue;
-	}
-	void setNextNode(genericType newNextNode)
-	{
-		nextNode = newNextNode;
-	}
+	void setKey(K newKey) { key = newKey; }
+	void setValue(V newValue) { value = newValue; }
+	void setNextNode(Node<K, V>* newNextNode) { nextNode = newNextNode; }
 };
 
-template<typename genericType>
+template<typename K, typename V>
 class HashTable
 {
 private:
 	const int tableSize = 10;
-	int table[tableSize];
+	Node<K,V> table = Node<K,V>[tableSize];
 public:
 // Methods
 // Constructors
@@ -91,12 +62,12 @@ public:
 
 	}
 // Insert function to add a node to the HashTable
-	Node<genericType>* insert(genericType keyToInsert, genericType valueToInsert)
+	Node<K,V>* insert(K keyToInsert, V valueToInsert)
 	{
 
 	}
 // Retrieve function to get info from the HashTable
-	Node<genericType>* retrieve(genericType keyToFind)
+	Node<K,V>* retrieve(K keyToFind)
 	{
 
 	}
