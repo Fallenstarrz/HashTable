@@ -20,7 +20,7 @@ public:
 		value = newValue;
 		nextNode = nullptr;
 	}
-	Node(K, V, Node<K,V>* newNextNode)
+	Node(K newKey, V newValue, Node<K,V>* newNextNode)
 	{
 		key = newKey;
 		value = newValue;
@@ -47,15 +47,18 @@ template<typename K, typename V>
 class HashTable
 {
 private:
-	const int tableSize = 10;
-	// Switch to using a double pointer table
-	Node<K,V> table = Node<K,V> [tableSize];
+	int tableSize = 10;
+	Node<K, V>** table;
 public:
 // Methods
 // Constructors
 	HashTable()
 	{
-
+		table = new Node<K, V>* [tableSize];
+		for (int i = 0; i < tableSize; i++)
+		{
+			table[i] = nullptr;
+		}
 	}
 // Deconstructors
 	~HashTable()
@@ -66,33 +69,43 @@ public:
 	void insert(K keyToInsert, V valueToInsert)
 	{
 		// Hash the key and use the return of the hashKey function to pick spot in the table
-		int hash = getHash(keyToInsert);
+		int hash = makeHash(keyToInsert);
 
-		if (table[hash] == null)
+		if (table[hash] == nullptr)
 		{
 			table[hash] = new Node<K, V>(keyToInsert, valueToInsert);
 		}
 		else
 		{
-			temp = table[hash];
-			while (temp.getNext() != nullptr)
+			Node<K,V>* temp = table[hash];
+			while (temp->getNextNode() != nullptr)
 			{
-				temp = temp.getNextNode();
+				temp = temp->getNextNode();
 			}
-			Node<K, V>* nodeToInsert = new Node<K, V>(keyToInsert, valueToInsert);
-			temp.setNextNode(nodeToInsert);
+			if (temp->getKey() == keyToInsert)
+			{
+				temp->setValue(valueToInsert);
+			}
+			else
+			{
+				Node<K, V>* nodeToInsert = new Node<K, V>(keyToInsert, valueToInsert);
+				temp->setNextNode(nodeToInsert);
+			}
 		}
+
 	}
 // Retrieve function to get info from the HashTable
 	Node<K,V>* retrieve(K keyToFind)
 	{
-
+		// DO SOME STUFF
 	}
 
-	int getHash(K keyToHash);
+	// Formula to hash
+	// tableSize is item to mod by
+	int makeHash(K keyToHash){ return keyToHash % tableSize; }
+
+	Node<K, V>* getNodeFromTable(int num)
 	{
-		// Formula to hash
-		// tableSize is item to mod by
-		return hashKey;
+		return table[num];
 	}
 };
