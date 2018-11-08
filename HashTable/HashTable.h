@@ -97,11 +97,33 @@ public:
 // Retrieve function to get info from the HashTable
 	Node<K,V>* retrieve(K keyToFind)
 	{
-		// DO SOME STUFF
+		int hash = makeHash(keyToFind);
+
+		if (table[hash] == nullptr)
+		{
+			return nullptr;
+		}
+		else
+		{
+			Node<K, V>* temp = table[hash];
+			while (temp != nullptr && temp->getKey() != keyToFind)
+			{
+				temp = temp->getNextNode();
+			}
+			if (temp == nullptr)
+			{
+				return nullptr;
+			}
+			else
+			{
+				return temp;
+			}
+		}
 	}
 
 	// Formula to hash
 	// tableSize is item to mod by
+	// still need to handle strings & test handled strings
 	int makeHash(K keyToHash){ return keyToHash % tableSize; }
 
 	Node<K, V>* getNodeFromTable(int num)
