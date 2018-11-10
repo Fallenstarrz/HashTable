@@ -1,6 +1,6 @@
 #pragma once
 
-#include <string>
+#include <functional>
 
 // Hash table node class
 // These store the values, keys and a pointer to the next Node at index.
@@ -69,15 +69,15 @@ public:
 	void insert(K keyToInsert, V valueToInsert)
 	{
 		// Hash the key and use the return of the hashKey function to pick spot in the table
-		int hash = makeHash(keyToInsert);
+		int hashKey = makeHash(keyToInsert);
 
-		if (table[hash] == nullptr)
+		if (table[hashKey] == nullptr)
 		{
-			table[hash] = new Node<K, V>(keyToInsert, valueToInsert);
+			table[hashKey] = new Node<K, V>(keyToInsert, valueToInsert);
 		}
 		else
 		{
-			Node<K,V>* temp = table[hash];
+			Node<K,V>* temp = table[hashKey];
 			while (temp->getNextNode() != nullptr)
 			{
 				temp = temp->getNextNode();
@@ -92,20 +92,19 @@ public:
 				temp->setNextNode(nodeToInsert);
 			}
 		}
-
 	}
 // Retrieve function to get info from the HashTable
 	Node<K,V>* retrieve(K keyToFind)
 	{
-		int hash = makeHash(keyToFind);
+		int hashKey = makeHash(keyToFind);
 
-		if (table[hash] == nullptr)
+		if (table[hashKey] == nullptr)
 		{
 			return nullptr;
 		}
 		else
 		{
-			Node<K, V>* temp = table[hash];
+			Node<K, V>* temp = table[hashKey];
 			while (temp != nullptr && temp->getKey() != keyToFind)
 			{
 				temp = temp->getNextNode();
@@ -122,12 +121,13 @@ public:
 	}
 
 	// Formula to hash
-	// tableSize is item to mod by
-	// still need to handle strings & test handled strings
-	int makeHash(K keyToHash){ return keyToHash % tableSize; }
+	// Used standard library to get a hash number and mod that number by tableSize
+	int makeHash(K keyToHash)
+	{ 
+		size_t hashBase = hash<K>() (keyToHash);
+		int hashedKey = hashBase % tableSize;
 
-	Node<K, V>* getNodeFromTable(int num)
-	{
-		return table[num];
+		return hashedKey;
 	}
+
 };
